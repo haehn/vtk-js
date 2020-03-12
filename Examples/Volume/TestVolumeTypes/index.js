@@ -41,7 +41,7 @@ const fullScreenRenderWindow = vtkFullScreenRenderWindow.newInstance({
 });
 const renderWindow = fullScreenRenderWindow.getRenderWindow();
 const renderer = fullScreenRenderWindow.getRenderer();
-const interactor = fullScreenRenderWindow.getInteractor();
+// const interactor = fullScreenRenderWindow.getInteractor();
 fullScreenRenderWindow.addController(controlPanel);
 renderer.setBackground(0.2, 0.2, 0.2);
 
@@ -116,7 +116,7 @@ sliceActor.getProperty().setRGBTransferFunction(0, ctfun);
 sliceActor.getProperty().setScalarOpacity(0, ofun);
 sliceActor.getProperty().setComponentWeight(0, 1.0);
 sliceActor.getProperty().setRGBTransferFunction(1, ctfun2);
-sliceActor.getProperty().setScalarOpacity(1, ofun);
+sliceActor.getProperty().setScalarOpacity(1, ofun2);
 sliceActor.getProperty().setComponentWeight(1, 1.0);
 sliceActor.getProperty().setRGBTransferFunction(2, ctfun3);
 sliceActor.getProperty().setScalarOpacity(2, ofun);
@@ -219,6 +219,18 @@ const configureScene = (
   sliceMapper.setSlicingMode(SlicingMode.K);
   sliceMapper.setKSlice(100);
   sliceMapper.setInputData(id);
+
+  // // Not enough to get color/opacity tfunc buffers rebuilt
+  // sliceActor.modified();
+
+  // These are needed to force OpenGL/ImageMapper to rebuild
+  // the buffers sent to the GPU in buildBufferObjects()...
+  ctfun.modified();
+  ctfun2.modified();
+  ctfun3.modified();
+  ctfun4.modified();
+  ofun.modified();
+  ofun2.modified();
 };
 
 function redrawScene() {
@@ -285,4 +297,4 @@ renderer.resetCameraClippingRange();
 sliceRenderer.addActor(sliceActor);
 sliceRenderer.resetCamera();
 
-interactor.requestAnimation(actor);
+renderWindow.render();

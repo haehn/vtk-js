@@ -710,8 +710,8 @@ function vtkOpenGLImageMapper(publicAPI, model) {
           oWidth,
           textureHeight,
           1,
-          VtkDataTypes.UNSIGNED_CHAR,
-          oTable
+          VtkDataTypes.FLOAT,
+          ofTable
         );
       }
     } else {
